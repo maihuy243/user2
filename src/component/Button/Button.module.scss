@@ -1,0 +1,55 @@
+.button {
+  min-width: 120px;
+  padding: 9px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+
+  cursor: pointer;
+  display: inline-flex;
+  border: 1px solid transparent;
+  align-items: center;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  .icon + .content,
+  .content + .icon {
+    margin-left: 8px;
+  }
+  & + .button {
+    margin-top: 6px;
+  }
+  .iconLeft,
+  .iconRight {
+    font-size: 26px;
+  }
+}
+
+.outLine {
+  border: 1px solid var(--btn-background);
+}
+.hover:hover {
+  color: var(--btn-background);
+}
+
+.bg {
+  background-color: var(--btn-background);
+}
+.large {
+  width: 100%;
+}
+.light {
+  background-color: var(--white);
+}
+.inline {
+  min-width: auto;
+}
+
+.hover:hover {
+  color: rgb(0, 0, 0);
+  outline: 1px solid rgb(32, 38, 151);
+}
+
+.mdbold {
+  font-weight: 600;
+  font-size: 16px;
+}

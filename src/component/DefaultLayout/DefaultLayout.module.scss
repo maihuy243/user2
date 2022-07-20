@@ -1,0 +1,17 @@
+.App {
+  width: 100%;
+  padding: 20px;
+  background-color: #f3f2f3;
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  .sidebar {
+    width: 350px;
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 410px);
+    overflow: hidden;
+  }
+}
