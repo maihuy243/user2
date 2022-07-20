@@ -93,7 +93,7 @@ function Categories() {
         <div className={cx("total")}>
           <div className={cx("pay")}>
             <Button hover light>
-              Xuất Hóa Đơn
+              Thanh Toán
             </Button>
           </div>
           <div className={cx("title")}>Total : </div>
