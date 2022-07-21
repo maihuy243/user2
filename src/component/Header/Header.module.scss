@@ -39,14 +39,30 @@
         }
       }
     }
-    .avatar-control {
-      width: 30px;
-      border-radius: 50%;
-      overflow: hidden;
-      cursor: pointer;
-      img {
-        width: 100%;
+  }
+  .avatar-control {
+    width: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+//responsive
+
+@media screen and (max-width: 1000px) {
+  .header {
+    margin-bottom: 8px;
+    .title {
+      p {
+        display: none;
       }
+    }
+    .content {
+      display: none;
     }
   }
 }

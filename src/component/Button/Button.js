@@ -5,6 +5,7 @@ const cl = classNames.bind(styles);
 
 function Button({
   href,
+  disabled = false,
   mdbold = false,
   hover = false,
   inline = false,
@@ -19,6 +20,7 @@ function Button({
 }) {
   const classes = cl("button", {
     bg,
+    disabled,
     mdbold,
     light,
     hover,

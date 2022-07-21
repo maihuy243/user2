@@ -1,33 +1,36 @@
-import styles from "./Categories.module.scss";
-import classNames from "classnames/bind";
-import { listPages } from "../uriApi/uriApi";
-import RenderProduct from "~/component/RenderProduct/RenderProduct";
-import Button from "../Button/Button.js";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Fragment } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Tippy from "@tippyjs/react/headless";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import classNames from "classnames/bind";
+
+import styles from "./Categories.module.scss";
+import RenderProduct from "~/component/RenderProduct/RenderProduct";
+import Button from "../Button/Button.js";
 import Product from "../Product/Product";
 import Loading from "../Loading/Loading";
-import { Fragment } from "react";
 import Popup from "../Popup/Popup";
-import Tippy from "@tippyjs/react/headless";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { listPages } from "../uriApi/uriApi";
 
 const cx = classNames.bind(styles);
 
-function Categories() {
+function Categories({ show }) {
+  // let keyList = "listssss";
   const [dataAPI, setDataAPI] = useState([]);
   const [loading, setIsLoading] = useState(true);
-  const [dataEndPoint, setDataEndPoint] = useState("man");
+  const [categories, setCategories] = useState("man");
   const [listItemAdd, setListItemAdd] = useState([]);
   const [total, setTotal] = useState(0);
 
   const renderNav = (data) => {
     return data.map((item, index) => (
       <li
-        onClick={() => setDataEndPoint(item.uri)}
+        onClick={() => setCategories(item.uri)}
         style={
-          item.uri === dataEndPoint
+          item.uri === categories
             ? {
                 backgroundColor: "#db644c",
                 color: "#fff",
@@ -43,20 +46,21 @@ function Categories() {
   };
 
   useEffect(() => {
-    getData(dataEndPoint);
-  }, [dataEndPoint]);
+    getData(categories);
+  }, [categories]);
 
-  const getData = async (endpoint = "man") => {
+  const getData = async (categories) => {
     setIsLoading(true);
-    const uri = "https://62d421735112e98e484b2508.mockapi.io/api/" + endpoint;
+    const uri = "https://62d421735112e98e484b2508.mockapi.io/api/products";
     const res = await axios.get(uri);
     const list = res.data;
+    const currListItem = list.filter((item) => item.category === categories);
     setIsLoading(false);
-    setDataAPI(list);
+    setDataAPI(currListItem);
   };
 
   const addItem = (idx) => {
-    const crrItem = dataAPI.filter((item, index) => index === idx);
+    const crrItem = dataAPI.filter((item) => item.id === idx);
     setListItemAdd((prev) => [...prev, ...crrItem]);
   };
 
@@ -64,20 +68,20 @@ function Categories() {
     let sum = 0;
     listItemAdd.length > 0
       ? (sum = listItemAdd.reduce((a, b) => a + Number(b.count), 0))
-      : setTotal(sum);
-    console.log(sum);
+      : (sum = 0);
     setTotal(sum);
   }, [listItemAdd]);
 
   const renderListBuy = (listItemAdd) => {
-    return listItemAdd.map((item, index) => (
-      <div className={cx("item")} key={index}>
+    return listItemAdd.map((item) => (
+      <div className={cx("item")} key={item.id}>
         <div className={cx("img")}>
           <img src={item.img} alt="" />
         </div>
         <div className={cx("name")}>{item.name}</div>
+        <div className={cx("amount")}>x 1</div>
         <div className={cx("count")}>{item.count} $</div>
-        <div className={cx("del")}>
+        <div className={cx("del")} onClick={() => console.log(item.id)}>
           <FontAwesomeIcon icon={faCircleXmark} />
         </div>
       </div>
@@ -86,26 +90,46 @@ function Categories() {
 
   return (
     <Fragment>
-      <div className={cx("navigation")}>
+      <div className={cx("categories")}>
+        <Tippy
+          trigger="click"
+          interactive
+          placement="bottom-start"
+          render={() => (
+            <Popup>
+              <div className={cx("list")}>{renderNav(listPages)}</div>
+            </Popup>
+          )}
+        >
+          <div className={cx("nav2")}>
+            <FontAwesomeIcon icon={faBars} />
+          </div>
+        </Tippy>
         <div className={cx("nav")}>
           <ul>{renderNav(listPages)}</ul>
         </div>
         <div className={cx("total")}>
           <div className={cx("pay")}>
-            <Button hover light>
-              Thanh Toán
-            </Button>
+            {total > 0 ? (
+              <Button hover onClick={() => show()}>
+                Thanh Toán
+              </Button>
+            ) : (
+              <Button disabled>Thanh Toán</Button>
+            )}
           </div>
           <div className={cx("title")}>Total : </div>
 
           <Tippy
             interactive
             placement="bottom-end"
-            render={() => (
-              <Popup>
-                <div className={cx("list")}>{renderListBuy(listItemAdd)}</div>
-              </Popup>
-            )}
+            render={() =>
+              listItemAdd.length > 0 && (
+                <Popup>
+                  <div className={cx("list")}>{renderListBuy(listItemAdd)}</div>
+                </Popup>
+              )
+            }
           >
             <div className={cx("cout")}> $ {total}</div>
           </Tippy>

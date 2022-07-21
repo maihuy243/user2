@@ -1,0 +1,60 @@
+.content {
+  min-width: 600px;
+  min-height: 400px;
+  background-color: transparent;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 4px;
+    transition: 0.3s;
+    z-index: 9999;
+  }
+  .products,
+  .pay {
+    width: 50%;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  .products {
+    background-color: #fff;
+  }
+  .pay {
+    background-color: #4488dd;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &-method {
+      select {
+        outline: none;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+    }
+    .logo {
+      margin: 20px 0px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      img {
+        width: 200px;
+      }
+    }
+    .input {
+      outline: none;
+      border: none;
+      padding: 8px 12px;
+      background-color: rgba($color: #ccc, $alpha: 0.3);
+      color: white;
+    }
+    .btnCheckout {
+      position: absolute;
+      bottom: 100px;
+    }
+  }
+}

@@ -13,7 +13,6 @@ import Popup from "../Popup/Popup";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
 import Button from "../Button/Button";
-import "./mobile.scss";
 
 const lists = [
   {
@@ -62,20 +61,20 @@ function Header() {
           <li>Information</li>
           <li>Shop System</li>
         </ul>
-        <Tippy
-          interactive
-          delay={[0, 300]}
-          placement="bottom-end"
-          render={() => <Popup>{renderBtn()}</Popup>}
-        >
-          <div className={cl("avatar-control")}>
-            <img
-              alt="avatar"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjfb4boKKaHu5x1oFASsO92hJb-78nyVcFKRT_WxvRf1O165kUOYWfa0uGn12tfdw8uRU&usqp=CAU"
-            />
-          </div>
-        </Tippy>
       </div>
+      <Tippy
+        trigger="click"
+        delay={[0, 300]}
+        placement="bottom-end"
+        render={() => <Popup>{renderBtn()}</Popup>}
+      >
+        <div className={cl("avatar-control")}>
+          <img
+            alt="avatar"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjfb4boKKaHu5x1oFASsO92hJb-78nyVcFKRT_WxvRf1O165kUOYWfa0uGn12tfdw8uRU&usqp=CAU"
+          />
+        </div>
+      </Tippy>
     </div>
   );
 }

@@ -7,8 +7,8 @@ const cx = classNames.bind(styles);
 function RenderProduct({ data, addItem }) {
   //render Products
   const render = (data) => {
-    return data.map((item, index) => (
-      <div key={index} className={cx("item")}>
+    return data.map((item) => (
+      <div key={item.id} className={cx("item")}>
         <div className={cx("img-item")}>
           <img src={item.img} alt="1" />
         </div>
@@ -25,7 +25,7 @@ function RenderProduct({ data, addItem }) {
             </Button>
           </div>
           <div className={cx("info")}>
-            <Button inline hover onClick={() => addItem(index)}>
+            <Button inline hover onClick={() => addItem(item.id)}>
               Add
             </Button>
           </div>

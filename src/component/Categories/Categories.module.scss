@@ -1,4 +1,4 @@
-.navigation {
+.categories {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,6 +37,9 @@
       }
     }
   }
+  .nav2 {
+    display: none;
+  }
   .total {
     min-width: 250px;
     display: flex;
@@ -47,22 +50,23 @@
     }
     .cout {
       font-size: 16px;
-      font-weight: 700;
       color: var(--btn-background);
       cursor: pointer;
       padding: 0px 8px;
     }
     .list {
       width: 300px;
-      padding: 8px;
+      padding: 4px;
       .item {
-        margin-bottom: 8px;
         display: flex;
         align-items: center;
+        cursor: pointer;
+        border-radius: 4px;
+        padding: 4px;
         .img {
           width: 40px;
           height: 40px;
-          border-radius: 50%;
+          border-radius: 8px;
           overflow: hidden;
           img {
             width: 100%;
@@ -79,6 +83,11 @@
           overflow: hidden;
           text-overflow: ellipsis;
         }
+        .amount {
+          color: rgb(0, 0, 0);
+          font-size: 12px;
+          margin-right: 4px;
+        }
         .count {
           color: var(--btn-background);
           padding: 0px 8px;
@@ -86,6 +95,20 @@
         .del {
           color: rgb(77, 73, 73);
           cursor: pointer;
+        }
+      }
+      .item + .item {
+        margin-top: 8px;
+      }
+      .item:hover {
+        background-color: var(--btn-background);
+        color: var(--white);
+        .count {
+          color: var(--white);
+          font-weight: bold;
+        }
+        .del {
+          color: rgb(40, 249, 71);
         }
       }
     }
@@ -98,4 +121,27 @@
   background-color: var(--white);
   border-radius: 4px;
   box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+}
+
+//responsive
+
+@media screen and (max-width: 1000px) {
+  .categories {
+    .nav {
+      display: none;
+    }
+    .nav2 {
+      display: block;
+    }
+    .list {
+      max-height: 200px;
+      li {
+        list-style: none;
+        padding: 4px 8px;
+      }
+    }
+  }
+}
+
+@media screen and(max-width:768px) {
 }

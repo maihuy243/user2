@@ -16,7 +16,7 @@ import {
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
-const api = "https://62d421735112e98e484b2508.mockapi.io/api/slides";
+const api = "https://62d421735112e98e484b2508.mockapi.io/api/products";
 
 const SOCIAL = [
   {
@@ -57,9 +57,7 @@ function SideBar() {
 
   useEffect(() => {
     const updateIndexCrr = setInterval(() => {
-      indexCrr < datas.length - 1
-        ? setIndexCrr((prev) => prev + 1)
-        : setIndexCrr(0);
+      setIndexCrr(Math.floor(Math.random() * datas.length));
     }, 2500);
     return () => {
       clearInterval(updateIndexCrr);
@@ -74,12 +72,14 @@ function SideBar() {
             <div className={cx("item-img")}>
               <img src={datas[indexCrr]?.img} alt="img" />
             </div>
-            <div className={cx("title")}>{datas[indexCrr]?.title}</div>
+            <div className={cx("title")}>{datas[indexCrr]?.name}</div>
           </div>
         )}
       </div>
+
+      {/* End */}
       <div className={cx("contact")}>
-        <div className={cx("title")}>Liên Hệ Với Chúng Tôi</div>
+        <div className={cx("title")}>Contact for me !</div>
         <div className={cx("social")}>
           {SOCIAL.map((item, index) => (
             <Tippy key={index} content={item.title} placement="bottom">
