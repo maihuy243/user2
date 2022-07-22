@@ -47,34 +47,28 @@ function Header() {
       </Button>
     ));
   };
+
   return (
     <div className={cl("header")}>
       <div className={cl("title")}>
         <img src={logo} alt="logo" />
         <p>GUMAX - Pioneering fashion forecast</p>
       </div>
-      <div className={cl("content")}>
-        <ul>
-          <li>Support</li>
-          <li>New Trend</li>
-          <li>Policy</li>
-          <li>Information</li>
-          <li>Shop System</li>
-        </ul>
+      <div className={cl("form")}>
+        <div className={cl("search")}></div>
+        <Tippy
+          trigger="click"
+          placement="bottom-end"
+          render={() => <Popup>{renderBtn()}</Popup>}
+        >
+          <div className={cl("avatar-control")}>
+            <img
+              alt="avatar"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjfb4boKKaHu5x1oFASsO92hJb-78nyVcFKRT_WxvRf1O165kUOYWfa0uGn12tfdw8uRU&usqp=CAU"
+            />
+          </div>
+        </Tippy>
       </div>
-      <Tippy
-        trigger="click"
-        delay={[0, 300]}
-        placement="bottom-end"
-        render={() => <Popup>{renderBtn()}</Popup>}
-      >
-        <div className={cl("avatar-control")}>
-          <img
-            alt="avatar"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjfb4boKKaHu5x1oFASsO92hJb-78nyVcFKRT_WxvRf1O165kUOYWfa0uGn12tfdw8uRU&usqp=CAU"
-          />
-        </div>
-      </Tippy>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Tippy from "@tippyjs/react/headless";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,13 +17,14 @@ import { listPages } from "../uriApi/uriApi";
 
 const cx = classNames.bind(styles);
 
-function Categories({ show }) {
+function Categories({ showCheckOut, setCart }) {
   // let keyList = "listssss";
   const [dataAPI, setDataAPI] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState("man");
   const [listItemAdd, setListItemAdd] = useState([]);
   const [total, setTotal] = useState(0);
+  const [isSorting, setIsSorting] = useState(false);
 
   const renderNav = (data) => {
     return data.map((item, index) => (
@@ -70,6 +71,7 @@ function Categories({ show }) {
       ? (sum = listItemAdd.reduce((a, b) => a + Number(b.count), 0))
       : (sum = 0);
     setTotal(sum);
+    setCart(listItemAdd);
   }, [listItemAdd]);
 
   const renderListBuy = (listItemAdd) => {
@@ -88,6 +90,26 @@ function Categories({ show }) {
     ));
   };
 
+  const sorting = () => {
+    setIsSorting((prev) => !prev);
+    const newData = [...dataAPI].sort((a, b) => {
+      return isSorting ? a.count - b.count : b.count - a.count;
+    });
+    setDataAPI(newData);
+  };
+
+  const searchItem = (fieldText) => {
+    if (fieldText === "") {
+      getData(categories);
+    } else {
+      const newDataSearch = [];
+      dataAPI.forEach((item) => {
+        // eslint-disable-next-line no-unused-expressions
+        item.name.includes(fieldText) ? newDataSearch.push(item) : item;
+      });
+      setDataAPI(newDataSearch);
+    }
+  };
   return (
     <Fragment>
       <div className={cx("categories")}>
@@ -111,15 +133,18 @@ function Categories({ show }) {
         <div className={cx("total")}>
           <div className={cx("pay")}>
             {total > 0 ? (
-              <Button hover onClick={() => show()}>
+              <Button hover outLine onClick={() => showCheckOut(true)}>
                 Thanh Toán
               </Button>
             ) : (
               <Button disabled>Thanh Toán</Button>
             )}
+            {listItemAdd.length > 0 && (
+              <span className={cx("dot-amount")}>{listItemAdd.length}</span>
+            )}
           </div>
-          <div className={cx("title")}>Total : </div>
 
+          <div className={cx("title")}>Total</div>
           <Tippy
             interactive
             placement="bottom-end"
@@ -131,13 +156,13 @@ function Categories({ show }) {
               )
             }
           >
-            <div className={cx("cout")}> $ {total}</div>
+            <div className={cx("count")}>$ {total}</div>
           </Tippy>
         </div>
       </div>
-      <Product>
+      <Product sort={sorting} search={searchItem}>
         {loading && <Loading />}
-        <RenderProduct data={dataAPI} addItem={addItem} />
+        {!loading && <RenderProduct data={dataAPI} addItem={addItem} />}
       </Product>
     </Fragment>
   );

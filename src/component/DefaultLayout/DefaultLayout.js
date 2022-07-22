@@ -1,4 +1,4 @@
-import { createContext, useCallback, useRef } from "react";
+import { createContext, useCallback, useRef, memo, useState } from "react";
 import classNames from "classnames/bind";
 
 import Header from "../Header/Header";
@@ -11,14 +11,19 @@ const cl = classNames.bind(styles);
 export const rootContext = createContext({});
 
 function DefauLayout() {
-  const checkout = useRef();
-  const showCheckOut = useCallback(() => {
-    checkout.current.style.display = "block";
-  }, []);
-  const hideCheckOut = useCallback(() => {
-    checkout.current.style.display = "none";
-  }, []);
+  const [cart, setCart] = useState([]);
+  const [showCheckOut, setShowCheckOut] = useState(false);
 
+  // const checkout = useRef();
+
+  // const showCheckOut = useCallback(() => {
+  //   checkout.current.style.display = "flex";
+  // }, []);
+  // const hideCheckOut = useCallback(() => {
+  //   checkout.current.style.display = "none";
+  // }, []);
+
+  console.log(showCheckOut);
   return (
     <rootContext.Provider value={{}}>
       <div className={cl("App")}>
@@ -27,14 +32,16 @@ function DefauLayout() {
         </div>
         <div className={cl("main")}>
           <Header />
-          <Categories show={showCheckOut} />
+          <Categories setCart={setCart} showCheckOut={setShowCheckOut} />
         </div>
-        <div ref={checkout} className={cl("checkout")}>
-          <Checkout hide={hideCheckOut} />
-        </div>
+        {showCheckOut && (
+          <div className={cl("checkout")}>
+            <Checkout cart={cart} hideCheckOut={setShowCheckOut} />
+          </div>
+        )}
       </div>
     </rootContext.Provider>
   );
 }
 
-export default DefauLayout;
+export default memo(DefauLayout);

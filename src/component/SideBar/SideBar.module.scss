@@ -42,6 +42,10 @@
         font-family: "Comfortaa", cursive;
         user-select: none;
         animation: 0.5s fadeIn ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 300px;
       }
       @keyframes fadeIn {
         to {
@@ -92,9 +96,7 @@
   }
 }
 
-
 //responsive
 
 @media screen and(max-width:768px) {
-  
 }
