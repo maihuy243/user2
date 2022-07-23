@@ -14,16 +14,6 @@ function DefauLayout() {
   const [cart, setCart] = useState([]);
   const [showCheckOut, setShowCheckOut] = useState(false);
 
-  // const checkout = useRef();
-
-  // const showCheckOut = useCallback(() => {
-  //   checkout.current.style.display = "flex";
-  // }, []);
-  // const hideCheckOut = useCallback(() => {
-  //   checkout.current.style.display = "none";
-  // }, []);
-
-  console.log(showCheckOut);
   return (
     <rootContext.Provider value={{}}>
       <div className={cl("App")}>
@@ -36,7 +26,7 @@ function DefauLayout() {
         </div>
         {showCheckOut && (
           <div className={cl("checkout")}>
-            <Checkout cart={cart} hideCheckOut={setShowCheckOut} />
+            <Checkout listCart={cart} hideCheckOut={setShowCheckOut} />
           </div>
         )}
       </div>

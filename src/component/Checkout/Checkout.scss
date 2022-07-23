@@ -76,6 +76,9 @@
           button {
             background-color: transparent;
             padding: 2px;
+            &:hover {
+              color: white;
+            }
           }
           input {
             margin: 0px 4px;

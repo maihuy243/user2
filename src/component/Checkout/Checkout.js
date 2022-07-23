@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
+import { Fragment } from "react";
 
 import "./Checkout.scss";
 import visa from "./logo/visa.png";
@@ -12,13 +13,95 @@ const options = [
   { value: "cash", label: "Cash" },
 ];
 
-function Checkout({ cart, hideCheckOut }) {
+function Checkout({ listCart, hideCheckOut }) {
   const [payType, setPayType] = useState("visa");
-  const [amount, setAmount] = useState(1);
 
-  useEffect(() => {
-    amount < 1 ? setAmount(1) : setAmount(amount);
-  }, [amount]);
+  // const renderOder = (list) => {
+  //   return list.map((item) => (
+  //     <div className="item" key={item.id}>
+  //       <div className="img">
+  //         <img src={item.img} alt=""></img>
+  //       </div>
+  //       <div className="name">{item.name}</div>
+  //       <div className="amount">
+  //         <button>
+  //           <FontAwesomeIcon icon={faPlus} />
+  //         </button>
+  //         <input placeholder="1"></input>
+  //         <button>
+  //           <FontAwesomeIcon icon={faMinus} />
+  //         </button>
+  //       </div>
+  //       <div className="price">{item.count}$</div>
+  //     </div>
+  //   ));
+  // };
+
+  const renderOder = (listCart) => {
+    //convert Unique Object width ID
+    const uniqueArr = [
+      ...new Map(listCart.map((item) => [item["id"], item])).values(),
+    ];
+
+    //get arr id
+    const listIdUnique = uniqueArr.reduce((a, b) => {
+      return [...a, b.id];
+    }, []);
+
+    const result = [];
+    for (let i = 0; i <= listIdUnique.length; i++) {
+      //lấy tất cả phần tử có id là
+      const sumNumberID = listCart.filter(
+        (item) => item.id === listIdUnique[i]
+      );
+      //lấy số lượng của từng id push vào mảng mới
+      const totalNew = sumNumberID.length;
+      // eslint-disable-next-line no-unused-expressions
+      totalNew > 0 ? result.push(totalNew) : totalNew;
+    }
+
+    const listProductUnique = uniqueArr.map((item, index) => {
+      return {
+        ...item,
+        //sửa total dựa vào index
+        totalSelected: result[index],
+      };
+    });
+
+    return listProductUnique.map((item) => {
+      const { totalSelected, name, count, img, id } = item;
+      return (
+        <div className="item" key={id}>
+          <div className="img">
+            <img src={img} alt=""></img>
+          </div>
+          <div className="name">{name}</div>
+          <div className="amount">
+            <button>
+              <FontAwesomeIcon icon={faMinus} onClick={totalSelected - 1} />
+            </button>
+            <input
+              placeholder={
+                totalSelected < 1 ? totalSelected === 1 : totalSelected
+              }
+            ></input>
+            <button>
+              <FontAwesomeIcon icon={faPlus} onClick={totalSelected + 1} />
+            </button>
+          </div>
+          <div className="price">{count * totalSelected}$</div>
+        </div>
+      );
+    });
+  };
+
+  const sumCount = (arr) => {
+    return arr.reduce((a, b) => a + b.count, 0);
+  };
+
+  const totalCount = (arr) => {
+    return arr.reduce((a, b) => a + b.count, 0);
+  };
 
   return (
     <div className="content">
@@ -30,26 +113,7 @@ function Checkout({ cart, hideCheckOut }) {
       </button>
       <div className="products">
         <div className="title">Order Sumary</div>
-        <div className="listcart">
-          {cart.map((item) => (
-            <div className="item" key={item.id}>
-              <div className="img">
-                <img src={item.img} alt=""></img>
-              </div>
-              <div className="name">{item.name}</div>
-              <div className="amount">
-                <button onClick={() => setAmount((prev) => prev + 1)}>
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-                <input placeholder="1"></input>
-                <button onClick={() => setAmount((prev) => prev - 1)}>
-                  <FontAwesomeIcon icon={faMinus} />
-                </button>
-              </div>
-              <div className="price">{item.count}$</div>
-            </div>
-          ))}
-        </div>
+        <div className="listcart">{renderOder(listCart)}</div>
         <div className="total">
           <div className="vat ">
             <div className="vat-title">VAT</div>
@@ -57,15 +121,11 @@ function Checkout({ cart, hideCheckOut }) {
           </div>
           <div className="dellvery my-2 ">
             <div className="dellvery-title">Dellvery</div>
-            <div className="dellvery-value">
-              {cart.reduce((a, b) => a + b.count, 0)} $
-            </div>
+            <div className="dellvery-value">{sumCount(listCart)}$</div>
           </div>
           <div className="totalsum  justify-conent-between">
             <div className="totalsum-title">TOTAL</div>
-            <div className="totalsum-value">
-              {cart.reduce((a, b) => a + b.count, 0)} $
-            </div>
+            <div className="totalsum-value">{totalCount(listCart)} $</div>
           </div>
         </div>
       </div>

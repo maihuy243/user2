@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment } from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Tippy from "@tippyjs/react/headless";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +25,6 @@ function Categories({ showCheckOut, setCart }) {
   const [listItemAdd, setListItemAdd] = useState([]);
   const [total, setTotal] = useState(0);
   const [isSorting, setIsSorting] = useState(false);
-
   const renderNav = (data) => {
     return data.map((item, index) => (
       <li
@@ -75,19 +74,57 @@ function Categories({ showCheckOut, setCart }) {
   }, [listItemAdd]);
 
   const renderListBuy = (listItemAdd) => {
-    return listItemAdd.map((item) => (
-      <div className={cx("item")} key={item.id}>
-        <div className={cx("img")}>
-          <img src={item.img} alt="" />
+    //convert Unique Object width ID
+    const uniqueArr = [
+      ...new Map(listItemAdd.map((item) => [item["id"], item])).values(),
+    ];
+
+    //get arr id
+    const listIdUnique = uniqueArr.reduce((a, b) => {
+      return [...a, b.id];
+    }, []);
+
+    const result = [];
+    for (let i = 0; i <= listIdUnique.length; i++) {
+      //lấy tất cả phần tử có id là
+      const sumNumberID = listItemAdd.filter(
+        (item) => item.id === listIdUnique[i]
+      );
+      //lấy số lượng của từng id push vào mảng mới
+      const totalNew = sumNumberID.length;
+      // eslint-disable-next-line no-unused-expressions
+      totalNew > 0 ? result.push(totalNew) : totalNew;
+    }
+
+    const listProductUnique = uniqueArr.map((item, index) => {
+      return {
+        ...item,
+        //sửa total dựa vào index
+        totalSelected: result[index],
+      };
+    });
+
+    return listProductUnique.map((item) => {
+      const { totalSelected, name, count, img, id } = item;
+      return (
+        <div className={cx("item")} key={id}>
+          <div className={cx("img")}>
+            <img src={img} alt="" />
+          </div>
+          <div className={cx("name")}>{name}</div>
+          <div className={cx("amount")}>x{totalSelected}</div>
+          <div className={cx("count")}>{count * totalSelected} $</div>
+          <div className={cx("del")} onClick={() => delProduct(id)}>
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </div>
         </div>
-        <div className={cx("name")}>{item.name}</div>
-        <div className={cx("amount")}>x 1</div>
-        <div className={cx("count")}>{item.count} $</div>
-        <div className={cx("del")} onClick={() => console.log(item.id)}>
-          <FontAwesomeIcon icon={faCircleXmark} />
-        </div>
-      </div>
-    ));
+      );
+    });
+  };
+
+  const delProduct = (id) => {
+    const newarr = listItemAdd.filter((item) => item.id !== id);
+    setListItemAdd(newarr);
   };
 
   const sorting = () => {
@@ -110,6 +147,7 @@ function Categories({ showCheckOut, setCart }) {
       setDataAPI(newDataSearch);
     }
   };
+
   return (
     <Fragment>
       <div className={cx("categories")}>
