@@ -1,6 +1,8 @@
 import Tippy from "@tippyjs/react/headless";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import {
+  faCaretDown,
   faCircleQuestion,
   faEarthAfrica,
   faGear,
@@ -9,12 +11,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import logo from "~/assets/logo/logo.png";
-import Popup from "../Popup/Popup";
+import Popup from "../../Popup/Popup";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
-import Button from "../Button/Button";
+import Button from "../../Button/Button";
+import { publicComponent } from "~/Router/router";
 
-const lists = [
+const controlUser = [
   {
     icon: <FontAwesomeIcon icon={faUser} />,
     title: "Tài Khoản",
@@ -39,10 +42,20 @@ const lists = [
 
 const cl = classNames.bind(styles);
 
-function Header() {
-  const renderBtn = () => {
-    return lists.map((item, index) => (
-      <Button key={index} large hover light iconLeft={item.icon}>
+function Header({ login }) {
+  const renderNavHeader = (data) => {
+    return data.map(({ path, component, title }) => {
+      return (
+        <Link key={title} to={path}>
+          {title}
+        </Link>
+      );
+    });
+  };
+
+  const renderBtn = (datas) => {
+    return datas.map((item, index) => (
+      <Button key={index} hover large iconLeft={item.icon}>
         {item.title}
       </Button>
     ));
@@ -55,17 +68,27 @@ function Header() {
         <p>GUMAX - Pioneering fashion forecast</p>
       </div>
       <div className={cl("form")}>
-        <div className={cl("search")}></div>
+        <div className={cl("services")}>
+          <ul>{renderNavHeader(publicComponent)}</ul>
+        </div>
         <Tippy
           trigger="click"
+          interactive
+          placement="bottom-start"
+          render={() => <Popup>{renderNavHeader(publicComponent)}</Popup>}
+        >
+          <div className={cl("sm-services")}>
+            <FontAwesomeIcon icon={faCaretDown} />
+          </div>
+        </Tippy>
+        <Tippy
+          interactive
+          trigger="click"
           placement="bottom-end"
-          render={() => <Popup>{renderBtn()}</Popup>}
+          render={() => <Popup>{renderBtn(controlUser)}</Popup>}
         >
           <div className={cl("avatar-control")}>
-            <img
-              alt="avatar"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjfb4boKKaHu5x1oFASsO92hJb-78nyVcFKRT_WxvRf1O165kUOYWfa0uGn12tfdw8uRU&usqp=CAU"
-            />
+            {login ? {} : <div className={cl("loginheader")}>Login</div>}
           </div>
         </Tippy>
       </div>

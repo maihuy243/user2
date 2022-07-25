@@ -1,0 +1,57 @@
+.visa {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  .logo {
+    width: 100%;
+    margin: 20px 0px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 50%;
+    }
+  }
+  .input {
+    outline: none;
+    border: none;
+    padding: 8px 12px;
+    background-color: rgba($color: #ccc, $alpha: 0.3);
+    color: white;
+    font-size: 14px;
+  }
+  .btncheckout {
+    button {
+      font-size: 16px;
+    }
+  }
+}
+//res
+
+@media screen and (max-width: 768px) {
+  .visa {
+    .logo {
+      width: 100%;
+      margin: 0px;
+      display: flex;
+      justify-content: center;
+      img {
+        width: 20%;
+      }
+    }
+    .text {
+      font-size: 12px;
+    }
+    .input {
+      outline: none;
+      border: none;
+      padding: 4px 12px;
+      background-color: rgba($color: #ccc, $alpha: 0.3);
+      color: white;
+      font-size: 14px;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+.App2 {
+  padding: 20px;
+  justify-content: space-between;
+  height: 100vh;
+  position: relative;
+  .services {
+    height: 300px;
+    padding: 8px 4px;
+    background-color: #fde5e4;
+    display: flex;
+    justify-content: center;
+    .content {
+      width: 1000px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .title {
+        text-align: center;
+        padding: 8px 0px;
+        font-size: 24px;
+        color: var(--btn-background);
+      }
+      .form {
+        margin: 4px 0px;
+        position: relative;
+        .input {
+          padding: 12px;
+          font-size: 16px;
+        }
+        .btn {
+          font-size: 12px;
+          padding: 12px 20px;
+          position: absolute;
+          top: 50%;
+          right: 1%;
+          transform: translate(-1%, -50%);
+        }
+      }
+    }
+  }
+}

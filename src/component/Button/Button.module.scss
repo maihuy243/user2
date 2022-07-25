@@ -32,9 +32,19 @@
 
 .bg {
   background-color: var(--btn-background);
+  color: var(--white);
+  &:hover {
+    color: var(#000);
+  }
 }
+
 .large {
   width: 100%;
+  text-align: center;
+}
+.hover:hover {
+  color: var(--btn-background);
+  border: 1px solid var(--btn-background);
 }
 .light {
   background-color: var(--white);
@@ -42,14 +52,6 @@
 .inline {
   min-width: auto;
   border: 1px solid #ccc;
-}
-
-.hover:hover {
-  color: rgb(0, 0, 0);
-  outline: 1px solid rgb(119, 239, 141);
-  .content {
-    color: rgb(119, 239, 141);
-  }
 }
 
 .mdbold {

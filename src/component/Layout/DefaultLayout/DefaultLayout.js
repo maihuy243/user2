@@ -1,10 +1,10 @@
-import { createContext, useCallback, useRef, memo, useState } from "react";
+import { createContext, memo, useState } from "react";
 import classNames from "classnames/bind";
 
 import Header from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
-import Categories from "../Categories/Categories";
-import Checkout from "../Checkout/Checkout";
+import Categories from "../../Categories/Categories";
+import Checkout from "../../Checkout/Checkout";
 import styles from "./DefaultLayout.module.scss";
 
 const cl = classNames.bind(styles);
@@ -13,6 +13,7 @@ export const rootContext = createContext({});
 function DefauLayout() {
   const [cart, setCart] = useState([]);
   const [showCheckOut, setShowCheckOut] = useState(false);
+  const [loginAuth, setLoginAuth] = useState(false);
 
   return (
     <rootContext.Provider value={{}}>
@@ -21,12 +22,17 @@ function DefauLayout() {
           <SideBar />
         </div>
         <div className={cl("main")}>
-          <Header />
+          <Header login={loginAuth} />
           <Categories setCart={setCart} showCheckOut={setShowCheckOut} />
         </div>
         {showCheckOut && (
           <div className={cl("checkout")}>
-            <Checkout listCart={cart} hideCheckOut={setShowCheckOut} />
+            <Checkout
+              listCart={cart}
+              hideCheckOut={setShowCheckOut}
+              login={loginAuth}
+              setLogin={setLoginAuth}
+            />
           </div>
         )}
       </div>

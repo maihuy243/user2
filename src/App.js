@@ -1,9 +1,15 @@
-import DefauLayout from "./component/DefaultLayout/DefaultLayout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import DefauLayout from "~/component/Layout/DefaultLayout/DefaultLayout";
+import LayoutServices from "./component/Layout/LayoutServices/LayoutServices";
 function App() {
   return (
-    <>
-      <DefauLayout></DefauLayout>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<DefauLayout />} />
+        <Route path="/service" element={<LayoutServices />} />
+      </Routes>
+    </Router>
   );
 }
 

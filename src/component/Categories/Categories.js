@@ -10,14 +10,21 @@ import classNames from "classnames/bind";
 import styles from "./Categories.module.scss";
 import RenderProduct from "~/component/RenderProduct/RenderProduct";
 import Button from "../Button/Button.js";
-import Product from "../Product/Product";
+import Product from "../Layout/Search/Search";
 import Loading from "../Loading/Loading";
 import Popup from "../Popup/Popup";
-import { listPages } from "../uriApi/uriApi";
 
 const cx = classNames.bind(styles);
 
-function Categories({ showCheckOut, setCart }) {
+const listPages = [
+  { uri: "man", title: "T-Shirt" },
+  { uri: "woman", title: "Women" },
+  { uri: "shoes", title: "Shoes" },
+  { uri: "gift", title: "Gift" },
+  { uri: "clock", title: "Clock" },
+];
+
+function Categories({ setCart, showCheckOut }) {
   // let keyList = "listssss";
   const [dataAPI, setDataAPI] = useState([]);
   const [loading, setIsLoading] = useState(true);
@@ -25,6 +32,8 @@ function Categories({ showCheckOut, setCart }) {
   const [listItemAdd, setListItemAdd] = useState([]);
   const [total, setTotal] = useState(0);
   const [isSorting, setIsSorting] = useState(false);
+
+
   const renderNav = (data) => {
     return data.map((item, index) => (
       <li
@@ -67,7 +76,11 @@ function Categories({ showCheckOut, setCart }) {
   useEffect(() => {
     let sum = 0;
     listItemAdd.length > 0
-      ? (sum = listItemAdd.reduce((a, b) => a + Number(b.count), 0))
+      ? (sum = listItemAdd.reduce((a, b) => {
+          if (b.discount > 0) {
+            return a + b.discount;
+          } else return a + b.count;
+        }, 0))
       : (sum = 0);
     setTotal(sum);
     setCart(listItemAdd);
@@ -105,7 +118,7 @@ function Categories({ showCheckOut, setCart }) {
     });
 
     return listProductUnique.map((item) => {
-      const { totalSelected, name, count, img, id } = item;
+      const { totalSelected, name, count, discount, img, id } = item;
       return (
         <div className={cx("item")} key={id}>
           <div className={cx("img")}>
@@ -113,7 +126,9 @@ function Categories({ showCheckOut, setCart }) {
           </div>
           <div className={cx("name")}>{name}</div>
           <div className={cx("amount")}>x{totalSelected}</div>
-          <div className={cx("count")}>{count * totalSelected} $</div>
+          <div className={cx("count")}>
+            {discount > 0 ? discount * totalSelected : count * totalSelected} $
+          </div>
           <div className={cx("del")} onClick={() => delProduct(id)}>
             <FontAwesomeIcon icon={faCircleXmark} />
           </div>

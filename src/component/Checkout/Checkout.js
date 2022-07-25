@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
-import { Fragment } from "react";
 
 import "./Checkout.scss";
-import visa from "./logo/visa.png";
-import cash from "./logo/cash.png";
+import Visa from "./visa/Visa";
+import Cash from "./Cash/Cash";
+import Login from "./Login/Login";
 
 const options = [
   { value: "visa", label: "Visa" },
@@ -15,27 +15,7 @@ const options = [
 
 function Checkout({ listCart, hideCheckOut }) {
   const [payType, setPayType] = useState("visa");
-
-  // const renderOder = (list) => {
-  //   return list.map((item) => (
-  //     <div className="item" key={item.id}>
-  //       <div className="img">
-  //         <img src={item.img} alt=""></img>
-  //       </div>
-  //       <div className="name">{item.name}</div>
-  //       <div className="amount">
-  //         <button>
-  //           <FontAwesomeIcon icon={faPlus} />
-  //         </button>
-  //         <input placeholder="1"></input>
-  //         <button>
-  //           <FontAwesomeIcon icon={faMinus} />
-  //         </button>
-  //       </div>
-  //       <div className="price">{item.count}$</div>
-  //     </div>
-  //   ));
-  // };
+  const [loginAuth, setLoginAuth] = useState(false);
 
   const renderOder = (listCart) => {
     //convert Unique Object width ID
@@ -69,7 +49,8 @@ function Checkout({ listCart, hideCheckOut }) {
     });
 
     return listProductUnique.map((item) => {
-      const { totalSelected, name, count, img, id } = item;
+      const { totalSelected, name, count, discount, img, id } = item;
+
       return (
         <div className="item" key={id}>
           <div className="img">
@@ -78,18 +59,16 @@ function Checkout({ listCart, hideCheckOut }) {
           <div className="name">{name}</div>
           <div className="amount">
             <button>
-              <FontAwesomeIcon icon={faMinus} onClick={totalSelected - 1} />
+              <FontAwesomeIcon icon={faMinus} />
             </button>
-            <input
-              placeholder={
-                totalSelected < 1 ? totalSelected === 1 : totalSelected
-              }
-            ></input>
+            <input placeholder={totalSelected}></input>
             <button>
-              <FontAwesomeIcon icon={faPlus} onClick={totalSelected + 1} />
+              <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>
-          <div className="price">{count * totalSelected}$</div>
+          <div className="price">
+            {discount > 0 ? discount * totalSelected : count * totalSelected}$
+          </div>
         </div>
       );
     });
@@ -100,111 +79,52 @@ function Checkout({ listCart, hideCheckOut }) {
   };
 
   const totalCount = (arr) => {
-    return arr.reduce((a, b) => a + b.count, 0);
+    return arr.reduce((a, b) => {
+      if (b.discount > 0) return a + b.discount;
+      else return a + b.count;
+    }, 0);
   };
 
   return (
-    <div className="content">
-      <button
-        className="close btn btn-danger"
-        onClick={() => hideCheckOut(false)}
-      >
-        <FontAwesomeIcon icon={faXmark} />
-      </button>
-      <div className="products">
-        <div className="title">Order Sumary</div>
-        <div className="listcart">{renderOder(listCart)}</div>
-        <div className="total">
-          <div className="vat ">
-            <div className="vat-title">VAT</div>
-            <div className="vat-value">0%</div>
+    <>
+      {loginAuth === true ? (
+        <div className="content">
+          <button
+            className="close btn btn-danger"
+            onClick={() => hideCheckOut(false)}
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+          <div className="products">
+            <div className="title">Order Sumary</div>
+            <div className="listcart">{renderOder(listCart)}</div>
+            <div className="total">
+              <div className="vat ">
+                <div className="vat-title">VAT</div>
+                <div className="vat-value">0%</div>
+              </div>
+              <div className="dellvery my-2 ">
+                <div className="dellvery-title">Dellvery</div>
+                <div className="dellvery-value">{sumCount(listCart)}$</div>
+              </div>
+              <div className="totalsum  justify-conent-between">
+                <div className="totalsum-title">TOTAL</div>
+                <div className="totalsum-value">{totalCount(listCart)} $</div>
+              </div>
+            </div>
           </div>
-          <div className="dellvery my-2 ">
-            <div className="dellvery-title">Dellvery</div>
-            <div className="dellvery-value">{sumCount(listCart)}$</div>
-          </div>
-          <div className="totalsum  justify-conent-between">
-            <div className="totalsum-title">TOTAL</div>
-            <div className="totalsum-value">{totalCount(listCart)} $</div>
+          <div className="pay">
+            <div className="pay-method">
+              <Select options={options} onChange={(e) => setPayType(e.value)} />
+            </div>
+            {payType === "visa" && <Visa />}
+            {payType === "cash" && <Cash />}
           </div>
         </div>
-      </div>
-      <div className="pay">
-        <div className="pay-method">
-          <Select options={options} onChange={(e) => setPayType(e.value)} />
-        </div>
-        {payType === "visa" && (
-          <>
-            <div className="logo">
-              <img src={visa} alt=""></img>
-            </div>
-            <div className="form-group">
-              <div className="form-group form-input ">
-                <label className="text-white text">Card Name</label>
-                <input className="form-control input"></input>
-              </div>
-              <div className="form-group form-input">
-                <label className="text-white text">Card Number</label>
-                <input className="form-control input"></input>
-              </div>
-              <div className="row">
-                <div className="form-group col-6 form-input ">
-                  <label className="text-white text">Date</label>
-                  <input className="form-control input"></input>
-                </div>
-                <div className="form-group col-6 form-input">
-                  <label className="text-white text">CVC</label>
-                  <input className="form-control input"></input>
-                </div>
-              </div>
-            </div>
-            <div className="btncheckout">
-              <button className="btn btn-warning form-control p-3 ">
-                Add Card
-              </button>
-            </div>
-          </>
-        )}
-        {payType === "cash" && (
-          <>
-            <div className="logo">
-              <img src={cash} alt=""></img>
-            </div>
-            <div className="form-group">
-              <div className="form-group form-input ">
-                <label className="text-white text">Address</label>
-                <input className="form-control input"></input>
-              </div>
-              <div className="row">
-                <div className="form-group col-6 form-input ">
-                  <label className="text-white text">Contry</label>
-                  <input className="form-control input"></input>
-                </div>
-                <div className="form-group col-6 form-input">
-                  <label className="text-white text">Zipcode</label>
-                  <input className="form-control input"></input>
-                </div>
-              </div>
-              <div className="row">
-                <div className="form-group col-6 form-input ">
-                  <label className="text-white text">City</label>
-                  <input className="form-control input"></input>
-                </div>
-                <div className="form-group col-6 form-input">
-                  <label className="text-white text">Mobile Phone</label>
-                  <input className="form-control input"></input>
-                </div>
-              </div>
-            </div>
-            <div className="btncheckout">
-              <button className="btn btn-warning form-control p-3 ">
-                Submit
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+      ) : (
+        <Login setLoginAuth={setLoginAuth} hideCheckOut={hideCheckOut} />
+      )}
+    </>
   );
 }
 

@@ -1,0 +1,48 @@
+.details {
+  width: 100%;
+  height: calc(100vh - 230px);
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 10px 10px;
+  animation: 0.5s fadein ease;
+  .back {
+    cursor: pointer;
+    margin-bottom: 8px;
+    button {
+      padding: 4px 12px;
+      background-color: var(--btn-background);
+      &:hover {
+        color: var(--white);
+      }
+    }
+  }
+  .details-product {
+    display: flex;
+    width: 100%;
+    .img,
+    .item {
+      width: 50%;
+    }
+    .img {
+      display: flex;
+      justify-content: center;
+      img {
+        width: 80%;
+      }
+    }
+    .item {
+      border: 1px solid red;
+    }
+  }
+}
+
+@keyframes fadein {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
