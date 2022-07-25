@@ -14,8 +14,10 @@ import {
   faYoutubeSquare,
 } from "@fortawesome/free-brands-svg-icons";
 import { faCopyright } from "@fortawesome/free-solid-svg-icons";
+import bg from "./feedback/bg.png";
 
 const cx = classNames.bind(styles);
+
 const api = "https://62d421735112e98e484b2508.mockapi.io/api/products";
 
 const SOCIAL = [
@@ -77,7 +79,22 @@ function SideBar() {
         )}
       </div>
 
-      {/* End */}
+      <div className={cx("contact-fb")}>
+        <div className={cx("title-feedback")}>Feedback</div>
+        <div className={cx("content-feedback")}>
+          <div className={cx("bg-feedback")}>
+            <img src={bg} alt=""></img>
+          </div>
+          <div className={cx("text-feedback")}>
+            <div className={cx("text-name")}>Mai Huy</div>
+            <div className={cx("text-info")}>
+              Very gút áp tờ nun Very gút áp tờ nun Very gút áp tờ nun Very gút
+              áp tờ nun
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className={cx("contact")}>
         <div className={cx("title")}>Contact for me !</div>
         <div className={cx("social")}>
@@ -88,6 +105,8 @@ function SideBar() {
           ))}
         </div>
       </div>
+
+      {/* End */}
       <div className={cx("info")}>
         <div className={cx("iteminfo")}>
           <span>Hotline</span>: 096.341.1489

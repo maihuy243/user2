@@ -75,7 +75,10 @@ function Checkout({ listCart, hideCheckOut }) {
   };
 
   const sumCount = (arr) => {
-    return arr.reduce((a, b) => a + b.count, 0);
+    return arr.reduce((a, b) => {
+      if (b.discount > 0) return a + b.discount;
+      else return a + b.count;
+    }, 0);
   };
 
   const totalCount = (arr) => {

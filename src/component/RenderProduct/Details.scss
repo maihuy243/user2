@@ -9,9 +9,12 @@
     cursor: pointer;
     margin-bottom: 8px;
     button {
-      padding: 4px 12px;
-      background-color: var(--btn-background);
+      border-radius: 4px;
+      padding: 4px 20px;
+      border: 1px solid var(--btn-background);
+      background-color: var(--white);
       &:hover {
+        background-color: var(--btn-background);
         color: var(--white);
       }
     }

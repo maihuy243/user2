@@ -15,6 +15,7 @@ function LayoutServices({ children }) {
             ></input>
             <button className="btn btn-danger">Search</button>
           </div>
+          <div className="bg"></div>
         </div>
       </div>
       <div className="main">{children}</div>

@@ -1,4 +1,4 @@
-import { faBackward } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Details.scss";
 
@@ -25,7 +25,7 @@ function Details({ data, id, showDetails }) {
     <div className="details">
       <div className="back">
         <button onClick={() => showDetails(false)}>
-          <FontAwesomeIcon icon={faBackward} />
+          <FontAwesomeIcon icon={faCaretLeft} />
         </button>
       </div>
 
