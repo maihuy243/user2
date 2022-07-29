@@ -33,7 +33,6 @@ function Categories({ setCart, showCheckOut }) {
   const [total, setTotal] = useState(0);
   const [isSorting, setIsSorting] = useState(false);
 
-
   const renderNav = (data) => {
     return data.map((item, index) => (
       <li
