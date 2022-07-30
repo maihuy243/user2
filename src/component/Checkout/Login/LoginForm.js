@@ -11,8 +11,6 @@ function LoginForm({ setlogin }) {
     const valueuser = username.current.value;
     const valuepass = password.current.value;
     const data = JSON.parse(localStorage.getItem("user"));
-    console.log(valuepass);
-    console.log(data.password);
 
     if (valueuser && valuepass) {
       if (valueuser === data.username && valuepass === data.password) {

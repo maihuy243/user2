@@ -20,8 +20,8 @@ export const publicComponent = [
     title: "Messenger",
   },
   {
-    path: "/service",
+    path: "/admin",
     component: LayoutServices,
-    title: "Request",
+    title: "ADMIN",
   },
 ];
