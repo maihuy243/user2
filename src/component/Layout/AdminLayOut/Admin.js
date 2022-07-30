@@ -1,28 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { message, Popconfirm, Modal, Button } from "antd";
+import { message, Popconfirm, Button } from "antd";
 import "antd/dist/antd.css";
 
 import Loading from "~/component/Loading/Loading";
 import "./Admin.scss";
 import Header from "../Header/Header";
-import RenderProduct from "~/component/RenderProduct/RenderProduct";
+import Form from "./Form";
 
 const uri = "https://62d421735112e98e484b2508.mockapi.io/api/products";
 
 function AdminLayout() {
   const [dataApi, setDataApi] = useState([]);
   const [isloading, setIsLoading] = useState(false);
-  const [isShowModalEdit, setIsShowModalEdit] = useState(false);
   const [isShowModalAdd, setIsShowModalAdd] = useState(false);
+  const [isShowModalEdit, setIsShowModalEdit] = useState(false);
 
   const valueSearch = useRef();
-  const nameItem = useRef();
-  const categoryE = useRef();
-  const imgE = useRef();
-  const countE = useRef();
-  const discountE = useRef();
-  const soldE = useRef();
 
   useEffect(() => {
     getData();
@@ -34,37 +28,23 @@ function AdminLayout() {
     setIsLoading(false);
   };
 
-  const showModalEdit = (id) => {
-    const crrItem = dataApi.filter((item) => item.id === id);
-    const [{ totalSelected, name, count, category, discount, sold, img }] =
-      crrItem;
+  // const showModalEdit = (id) => {
+  //   const crrItem = dataApi.filter((item) => item.id === id);
+  //   // const [{ totalSelected, name, count, category, discount, sold, img }] =
+  //   //   crrItem;
 
-    // nameE.current.value = name;
-    // categoryE.current.value = category;
-    // imgE.current.value = img;
-    // countE.current.value = count;
-    // discountE.current.value = discount;
-    // soldE.current.value = sold;
+  //   // nameE.current.value = name;
+  //   // categoryE.current.value = category;
+  //   // imgE.current.value = img;
+  //   // countE.current.value = count;
+  //   // discountE.current.value = discount;
+  //   // soldE.current.value = sold;
 
-    setIsShowModalEdit(true);
-  };
-  const handleOk = () => {
-    setIsShowModalEdit(false);
-  };
-
-  const handleCancel = () => {
-    setIsShowModalEdit(false);
-  };
+  //   setIsShowModal(true);
+  // };
 
   // Add Modal
 
-  const handleOkAdd = () => {
-    setIsShowModalAdd(false);
-  };
-
-  const handleCancelAdd = () => {
-    setIsShowModalAdd(false);
-  };
   const renderProduct = (list) => {
     return list.map(({ category, count, discount, id, img, name, sold }) => {
       return (
@@ -92,7 +72,7 @@ function AdminLayout() {
               </Popconfirm>
             </div>
             <div>
-              <Button inline onClick={() => showModalEdit(id)}>
+              <Button inline onClick={() => setIsShowModalEdit(true)}>
                 Edit
               </Button>
             </div>
@@ -105,7 +85,11 @@ function AdminLayout() {
   const renderKeys = (list) => {
     if (list.length > 0) {
       const firtItem = Object.keys(list[0]);
-      return firtItem.map((item) => <option value={item}>{item}</option>);
+      return firtItem.map((item) => (
+        <option key={item} value={item}>
+          {item}
+        </option>
+      ));
     }
   };
 
@@ -148,8 +132,6 @@ function AdminLayout() {
     message.error("Hủy tác vụ Xóa !");
   };
 
-  console.log(isShowModalAdd);
-
   return (
     <div className="admin">
       <Header></Header>
@@ -172,95 +154,26 @@ function AdminLayout() {
           </select>
         </div>
       </div>
-      {isShowModalEdit && (
-        <Modal
-          title="Edit User"
-          visible={isShowModalEdit}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <div className="from-group">
-            <label className="form-label">Name</label>
-            <input className="form-control"></input>
-          </div>
-          <div className="from-group">
-            <label className="form-label">Category</label>
-            <input className="form-control"></input>
-          </div>
-          <div className="from-group">
-            <label className="form-label">Img</label>
-            <input className="form-control"></input>
-          </div>
-          <div className="row">
-            <div className="from-group col-6">
-              <label className="form-label">Count</label>
-              <input className="form-control"></input>
-            </div>
-            <div className="from-group col-6">
-              <label className="form-label">Discount</label>
-              <input className="form-control"></input>
-            </div>
-          </div>
-          <div className="row">
-            <div className="from-group col-6">
-              <label className="form-label">Sold</label>
-              <input className="form-control"></input>
-            </div>
-            <div className="from-group col-6">
-              <label className="form-label">Totalselected</label>
-              <input className="form-control" disabled></input>
-            </div>
-          </div>
-        </Modal>
-      )}
+
       {isShowModalAdd && (
-        <Modal
-          visible={isShowModalAdd}
-          title="Add User"
-          onOk={handleOkAdd}
-          onCancel={handleCancelAdd}
-        >
-          <div className="from-group">
-            <label ref={nameItem} className="form-label">
-              Name
-            </label>
-            <input className="form-control"></input>
-          </div>
-          <div className="from-group">
-            <label className="form-label">Category</label>
-            <input ref={categoryE} className="form-control"></input>
-          </div>
-          <div className="from-group">
-            <label className="form-label">Img</label>
-            <input ref={imgE} className="form-control"></input>
-          </div>
-          <div className="row">
-            <div className="from-group col-6">
-              <label className="form-label">Count</label>
-              <input ref={countE} className="form-control"></input>
-            </div>
-            <div className="from-group col-6">
-              <label className="form-label">Discount</label>
-              <input ref={discountE} className="form-control"></input>
-            </div>
-          </div>
-          <div className="row">
-            <div className="from-group col-6">
-              <label className="form-label">Sold</label>
-              <input ref={soldE} className="form-control"></input>
-            </div>
-            <div className="from-group col-6">
-              <label className="form-label">Totalselected</label>
-              <input className="form-control">1</input>
-            </div>
-          </div>
-        </Modal>
+        <Form
+          isModal={isShowModalAdd}
+          setIsShowModal={setIsShowModalAdd}
+          type="Add"
+        />
+      )}
+      {isShowModalEdit && (
+        <Form
+          isModal={isShowModalEdit}
+          setIsShowModal={setIsShowModalEdit}
+          type="Edit"
+        />
       )}
       {isloading ? (
         <Loading />
       ) : (
         <div className="listproduct">
-          <div className=" row fixed  ">
+          <div className="row fixed ">
             <div className="item col-1">Id</div>
             <div className="item col-2">Name</div>
             <div className="item col-1">Category</div>
