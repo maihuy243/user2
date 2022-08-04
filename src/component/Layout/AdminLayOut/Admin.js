@@ -15,6 +15,7 @@ function AdminLayout() {
   const [isloading, setIsLoading] = useState(false);
   const [isShowModalAdd, setIsShowModalAdd] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+  const [crrItemEdit, setCrrItemEdit] = useState();
 
   const valueSearch = useRef();
 
@@ -28,22 +29,10 @@ function AdminLayout() {
     setIsLoading(false);
   };
 
-  // const showModalEdit = (id) => {
-  //   const crrItem = dataApi.filter((item) => item.id === id);
-  //   // const [{ totalSelected, name, count, category, discount, sold, img }] =
-  //   //   crrItem;
-
-  //   // nameE.current.value = name;
-  //   // categoryE.current.value = category;
-  //   // imgE.current.value = img;
-  //   // countE.current.value = count;
-  //   // discountE.current.value = discount;
-  //   // soldE.current.value = sold;
-
-  //   setIsShowModal(true);
-  // };
-
-  // Add Modal
+  const handleEdit = (id) => {
+    setCrrItemEdit(dataApi.find((item) => item.id === id));
+    setIsShowModalEdit(true);
+  };
 
   const renderProduct = (list) => {
     return list.map(({ category, count, discount, id, img, name, sold }) => {
@@ -72,7 +61,7 @@ function AdminLayout() {
               </Popconfirm>
             </div>
             <div>
-              <Button inline onClick={() => setIsShowModalEdit(true)}>
+              <Button inline onClick={() => handleEdit(id)}>
                 Edit
               </Button>
             </div>
@@ -167,6 +156,7 @@ function AdminLayout() {
           isModal={isShowModalEdit}
           setIsShowModal={setIsShowModalEdit}
           type="Edit"
+          itemEdit={crrItemEdit}
         />
       )}
       {isloading ? (
